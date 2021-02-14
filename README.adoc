@@ -1,0 +1,6 @@
+= XYZ Reader
+
+This project is part of the Udacity's Android Nanodegree
+
+A redesign will be made to the XYZ Reader, so It follows the Material Design
+guidelines and translate a set of static design mocks to a living and breathing app.
