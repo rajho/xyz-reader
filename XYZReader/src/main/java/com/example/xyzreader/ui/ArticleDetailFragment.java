@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ShareCompat;
 import androidx.palette.graphics.Palette;
 
@@ -39,22 +40,23 @@ import java.util.GregorianCalendar;
  */
 public class ArticleDetailFragment extends Fragment implements
                                                     LoaderManager.LoaderCallbacks<Cursor> {
-  public static final  String ARG_ITEM_ID     = "item_id";
-  private static final String TAG             = "ArticleDetailFragment";
-  private static final float  PARALLAX_FACTOR = 1.25f;
-  private final SimpleDateFormat  dateFormat     = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss" +
-                                                                        ".sss");
+  public static final  String            ARG_ITEM_ID     = "item_id";
+  private static final String            TAG             = "ArticleDetailFragment";
+  private static final float             PARALLAX_FACTOR = 1.25f;
+  private final        SimpleDateFormat  dateFormat      = new SimpleDateFormat(
+      "yyyy-MM-dd'T'HH:mm:ss" +
+      ".sss");
   // Use default locale format
-  private final SimpleDateFormat  outputFormat   = new SimpleDateFormat();
+  private final        SimpleDateFormat  outputFormat    = new SimpleDateFormat();
   // Most time functions can only handle 1902 - 2037
-  private final GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2, 1, 1);
-  private Cursor mCursor;
-  private long   mItemId;
-  private View   mRootView;
-  private int    mMutedColor = 0xFF333333;
-  private ColorDrawable mStatusBarColorDrawable;
-  private ImageView mPhotoView;
-  private int       mStatusBarFullOpacityBottom;
+  private final        GregorianCalendar START_OF_EPOCH  = new GregorianCalendar(2, 1, 1);
+  private              Cursor            mCursor;
+  private              long              mItemId;
+  private              View              mRootView;
+  private              int               mMutedColor     = 0xFF333333;
+  private              ColorDrawable     mStatusBarColorDrawable;
+  private              ImageView         mPhotoView;
+  private              int               mStatusBarFullOpacityBottom;
 
   /**
    * Mandatory empty constructor for the fragment manager to instantiate the
@@ -154,6 +156,7 @@ public class ArticleDetailFragment extends Fragment implements
     TextView bylineView = (TextView) mRootView.findViewById(R.id.article_byline);
     bylineView.setMovementMethod(new LinkMovementMethod());
     TextView bodyView = (TextView) mRootView.findViewById(R.id.article_body);
+    Toolbar  toolbar  = (Toolbar) mRootView.findViewById(R.id.toolbar);
 
 
     bodyView.setTypeface(Typeface.createFromAsset(
@@ -166,6 +169,7 @@ public class ArticleDetailFragment extends Fragment implements
       mRootView.setVisibility(View.VISIBLE);
       mRootView.animate().alpha(1);
       titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
+      toolbar.setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
       Date publishedDate = parsePublishedDate();
       if (!publishedDate.before(START_OF_EPOCH.getTime())) {
         bylineView.setText(Html.fromHtml(
@@ -235,6 +239,7 @@ public class ArticleDetailFragment extends Fragment implements
 
     mCursor = cursor;
     if (mCursor != null && !mCursor.moveToFirst()) {
+      // TODO Fix error when opening second image
       Log.e(TAG, "Error reading item detail cursor");
       mCursor.close();
       mCursor = null;

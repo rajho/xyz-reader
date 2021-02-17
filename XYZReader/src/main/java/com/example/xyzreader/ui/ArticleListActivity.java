@@ -1,5 +1,7 @@
 package com.example.xyzreader.ui;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.LoaderManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -16,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -74,6 +77,7 @@ public class ArticleListActivity extends AppCompatActivity
     mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
 
     mRecyclerView = findViewById(R.id.recycler_view);
+    mRecyclerView.setAdapter(new Adapter(null));
     getLoaderManager().initLoader(0, null, this);
 
     if (savedInstanceState == null) {
@@ -153,19 +157,17 @@ public class ArticleListActivity extends AppCompatActivity
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-      View view = getLayoutInflater().inflate(
-          R.layout.list_item_article,
-          parent,
-          false
-      );
+      View view = getLayoutInflater().inflate(R.layout.list_item_article, parent, false);
       final ViewHolder vh = new ViewHolder(view);
       view.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-          startActivity(new Intent(
+          Intent intent = new Intent(
               Intent.ACTION_VIEW,
               ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition()))
-          ));
+          );
+
+          startActivity(intent);
         }
       });
       return vh;
