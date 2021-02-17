@@ -239,7 +239,6 @@ public class ArticleDetailFragment extends Fragment implements
 
     mCursor = cursor;
     if (mCursor != null && !mCursor.moveToFirst()) {
-      // TODO Fix error when opening second image
       Log.e(TAG, "Error reading item detail cursor");
       mCursor.close();
       mCursor = null;
